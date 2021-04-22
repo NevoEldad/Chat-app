@@ -1,0 +1,28 @@
+{
+  "name": "chat-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node ./src/index",
+    "dev": "nodemon ./src/index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NevoEldad/Chat-app.git"
+  },
+  "author": "Eldad Nevo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NevoEldad/Chat-app/issues"
+  },
+  "homepage": "https://github.com/NevoEldad/Chat-app#readme"
+}
