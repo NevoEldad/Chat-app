@@ -1,26 +1,40 @@
 const socket = io();
 
-socket.on('message', data => {
-  console.log('MESSAGE GOT IN');
+//Elements
+const $sendButton = document.querySelector('#sendMessage');
+const $messageContent = document.querySelector('#message');
+const $sendLocation = document.querySelector('#send-location');
+const $messages = document.querySelector('#messages');
 
-  console.log(data);
+//Templates
+const messageTmeplate = document.querySelector('#message-template').innerHTML;
+
+socket.on('message', message => {
+  console.log(message);
+  const html = Mustache.render(messageTmeplate, {
+    message
+  });
+  $messages.insertAdjacentHTML('beforeend', html);
 });
 
-const sendButton = document.querySelector('#sendMessage');
-const messageContent = document.querySelector('#message');
-const sendLocation = document.querySelector('#send-location');
-
-sendButton.addEventListener('click', () => {
-  socket.emit('sendMessage', messageContent.value, error => {
+$sendButton.addEventListener('click', () => {
+  socket.emit('sendMessage', $messageContent.value, error => {
+    $sendButton.setAttribute('disabled', 'disabled');
+    $messageContent.value = '';
+    $messageContent.focus();
     if (error) {
+      $sendButton.removeAttribute('disabled');
       return console.log('error');
     }
+    $sendButton.removeAttribute('disabled');
     console.log(`message was delivered`);
   });
 });
 
-sendLocation.addEventListener('click', () => {
+$sendLocation.addEventListener('click', () => {
+  $sendLocation.setAttribute('disabled', 'disabled');
   if (!navigator.geolocation) {
+    $sendLocation.removeAttribute('disabled');
     return alert('Geolocation isnt supported');
   }
   navigator.geolocation.getCurrentPosition(position => {
@@ -32,8 +46,10 @@ sendLocation.addEventListener('click', () => {
       },
       error => {
         if (error) {
+          $sendLocation.removeAttribute('disabled');
           return console.log('An error occured');
         }
+        $sendLocation.removeAttribute('disabled');
         console.log(`Location has been sent`);
       }
     );
